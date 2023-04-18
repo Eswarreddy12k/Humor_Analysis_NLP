@@ -31,7 +31,8 @@ library(circlize)
 library(networkD3)
 library(stringr)
 library(IRdisplay)
-
+library(png)
+library(topicmodels)
 
 data <- read.csv('C:/Users/eswar/Downloads/fg_dataset1_3.csv', fileEncoding = "latin1")
 data2 <- read.csv('C:/Users/eswar/Downloads/Family_guy_dialog.csv')
@@ -40,75 +41,394 @@ afinn <- read.csv('C:/Users/eswar/Downloads/Afinn.csv')
 bing  <-  read_csv('C:/Users/eswar/Downloads/Bing.csv')
 nrc   <- read_csv('C:/Users/eswar/Downloads/NRC.csv')
 
-head(data,3)
 
 
 
-
+dim(data2)
+tail(data2,3)
+#removing null values if any
+data2 <- na.omit(data2)
+#converting text to corpus
 corpus2 <- Corpus(VectorSource(data2$dialog))
+#pre-processing using tdm
 tdm2 <- TermDocumentMatrix(corpus2, control = list(removePunctuation = TRUE,
                                                  stopwords = TRUE))
+dim(data2)
+tdm2
+
+
 lda2 <- LDA(tdm2, k = 10)
 topics2 <- topics(lda2)
 
 data2_train=matrix(c(0,0,0,0,0,0,0,0,0,0,0))
 data2_train_avg=matrix(c(0,0,0,0,0,0,0,0,0,0,0))
+data2_character_wise=matrix(0,6,11)
+data2_character_wise_avg=matrix(0,6,11)
+
 for(i in 1:1372){
+  
   if(data2$seasons[i]=="season 1"){
     data2_train[1]=data2_train[1]+topics2[i];
-    data2_train_avg[1]=data2_train_avg[1]+1
+    data2_train_avg[1]=data2_train_avg[1]+1;
+    
+    as1=1;
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   if(data2$seasons[i]=="season 2"){
     data2_train[2]=data2_train[2]+topics2[i];
-    data2_train_avg[2]=data2_train_avg[2]+1
+    data2_train_avg[2]=data2_train_avg[2]+1;
+    
+    
+    as1=2;
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   if(data2$seasons[i]=="season 3"){
     data2_train[3]=data2_train[3]+topics2[i];
-    data2_train_avg[3]=data2_train_avg[3]+1
+    data2_train_avg[3]=data2_train_avg[3]+1;
+    
+    
+    as1=3;
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   if(data2$seasons[i]=="season 4"){
     data2_train[4]=data2_train[4]+topics2[i];
-    data2_train_avg[4]=data2_train_avg[4]+1
+    data2_train_avg[4]=data2_train_avg[4]+1;
+    
+    
+    as1=4;
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   if(data2$seasons[i]=="season 5"){
     data2_train[5]=data2_train[5]+topics2[i];
     data2_train_avg[5]=data2_train_avg[5]+1
+    as1=5;
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   if(data2$seasons[i]=="season 6"){
     data2_train[6]=data2_train[6]+topics2[i];
-    data2_train_avg[6]=data2_train_avg[6]+1
+    data2_train_avg[6]=data2_train_avg[6]+1;
+    
+    as1=6;
+    
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   if(data2$seasons[i]=="season 7"){
     data2_train[7]=data2_train[7]+topics2[i];
-    data2_train_avg[7]=data2_train_avg[7]+1
+    data2_train_avg[7]=data2_train_avg[7]+1;
+    as1=7;
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   if(data2$seasons[i]=="season 8"){
     data2_train[8]=data2_train[8]+topics2[i];
-    data2_train_avg[8]=data2_train_avg[8]+1
+    data2_train_avg[8]=data2_train_avg[8]+1;
+    as1=8;
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   if(data2$seasons[i]=="season 9"){
     data2_train[9]=data2_train[9]+topics2[i];
-    data2_train_avg[9]=data2_train_avg[9]+1
+    data2_train_avg[9]=data2_train_avg[9]+1;
+    
+    as1=9;
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   if(data2$seasons[i]=="season 10"){
     data2_train[10]=data2_train[10]+topics2[i];
-    data2_train_avg[10]=data2_train_avg[10]+1
+    data2_train_avg[10]=data2_train_avg[10]+1;
+    
+    as1=10;
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   if(data2$seasons[i]=="season 12"){
     data2_train[11]=data2_train[11]+topics2[i];
-    data2_train_avg[11]=data2_train_avg[11]+1
+    data2_train_avg[11]=data2_train_avg[11]+1;
+    
+    as1=11;
+    if(data2$character[i]=="Lois"){
+      data2_character_wise[1,as1]=data2_character_wise[1,as1]+topics2[i];
+      data2_character_wise_avg[1,as1]=data2_character_wise_avg[1,as1]+1;
+    }
+    if(data2$character[i]=="Stewie"){
+      data2_character_wise[2,as1]=data2_character_wise[2,as1]+topics2[i];
+      data2_character_wise_avg[2,as1]=data2_character_wise_avg[2,as1]+1;
+    }
+    if(data2$character[i]=="Meg"){
+      data2_character_wise[3,as1]=data2_character_wise[3,as1]+topics2[i];
+      data2_character_wise_avg[3,as1]=data2_character_wise_avg[3,as1]+1;
+    }
+    if(data2$character[i]=="Brian"){
+      data2_character_wise[4,as1]=data2_character_wise[4,as1]+topics2[i];
+      data2_character_wise_avg[4,as1]=data2_character_wise_avg[4,as1]+1;
+    }
+    if(data2$character[i]=="Chris"){
+      data2_character_wise[5,as1]=data2_character_wise[5,as1]+topics2[i];
+      data2_character_wise_avg[5,as1]=data2_character_wise_avg[5,as1]+1;
+    }
+    if(data2$character[i]=="Peter"){
+      data2_character_wise[6,as1]=data2_character_wise[6,as1]+topics2[i];
+      data2_character_wise_avg[6,as1]=data2_character_wise_avg[6,as1]+1;
+    }
   }
   
 }
 for(i in 1:11){
   data2_train[i]=data2_train[i]/data2_train_avg[i]
 }
+
+
+
+data2_character_wise
+
 data2_train
 
 
 plot(data2_train)
+
 lines(data2_train,col="blue")
 
+data2_character_wise[,1]
+
+pie(data2_character_wise[,1],c("Lios","Stewie","Meg","Brian","Chris","Peter"))
+
+par(mfrow=c(3,4) ) # 1 row and 3 columns for plots
+for(i in 1:11){
+  pie( data2_character_wise[,i], xlab=paste("Season ",i, sep =""), labels=c("Lios","Stewie","Meg","Brian","Chris","Peter"))
+}
+
+pie( table(mtcars$cyl[mtcars$gear==4]), col=grey.colors(3), xlab="4 Gears", labels="")
+mtext(side=3, text="Number of Cylendars by Gears")
+pie( table(mtcars$cyl[mtcars$gear==5]), col=grey.colors(3), xlab="5 Gears", labels="")
+plot.new()
+legend("left",legend=c("4","6","8"), fill=grey.colors(3), box.lty=0, title="Cylinders")
 
 
 
@@ -118,47 +438,65 @@ lines(data2_train,col="blue")
 
 
 
-library(topicmodels)
 
-data <- na.omit(data)
-nrow(data)
+
+
+
+
 summary(data)
+
+dim(data)
+#removing null values 
+data <- na.omit(data)
+head(data,5)
 # Convert text to lowercase
+#vectorized operations not working for huge data
 for(i in 1:72996){
   data[i,3] <- tolower(data[i,3])
 }
+
+dim(data)
+head(data,5)
+
 # Remove punctuation and numbers
 for(i in 1:72996){
   data[i,3] <- gsub("[[:punct:][:digit:]]", " ", data[i,3])
   data[i,3] <- gsub("\n", " ", data[i,3])
-  print(i)
+  #print(i)
 }
+dim(data)
+head(data,5)
 
-
+head(data,5)
 # Remove stop words
 for(i in 1:72996){
   data[i,3] <- removeWords(data[i,3], stopwords("english"))
-  print(i)
+  #print(i)
 }
 
+head(data,5)
 
 # Stem or lemmatize words
 for(i in 1:72996){
   data[i,3] <- stemDocument(data[i,3])
-  
-    print(i)
-  
+   # print(i)
   
 }
+head(data,5)
+
+
+
 dim(data)
 data$dialouge
 
-# assume "dialogues" is a dataframe with a "text" column containing the dialogue text
+#fitting dialogues into corpus
+head(data,5)
 corpus <- Corpus(VectorSource(data$dialouge))
-
-
 tdm <- TermDocumentMatrix(corpus)
 inspect(tdm)
+
+
+
 
 lda <- LDA(tdm, k = 10)
 lda
@@ -455,7 +793,7 @@ prediction=((predict(model,newdata = test)-7.5)*100)
 plot(prediction)
 lines(prediction,col="blue")
 
-plot(s_test_split[,2])
+plot(s_test_split[,2],ylab = "Predicted trend")
 lines(s_test_split[,2],col="blue")
 
 plot(s_train_dataset[,2])
